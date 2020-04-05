@@ -24,7 +24,9 @@ piece와 num배열의 [i]값이 같은 것끼리 매칭시켜 위치 지정
 SceneID scene1, scene2;
 ObjectID piece[16], startbutton, skip;
 int num[16], key;
-char arr[16][15];
+char arr[16][15], t[40];
+clock_t start, finish;
+double duration = 0.0;
 
 
 void ranNum() {
@@ -92,9 +94,12 @@ int leftFinding() {
 }
 
 void success() {
+	finish = clock();
+	duration = (double)(finish - start) / CLOCKS_PER_SEC;
+	sprintf_s(t, "축하합니다! (걸린시간: %d초)", (int)duration);
 	showObject(startbutton);
 	showObject(piece[key]);
-	showMessage("축하합니다!");
+	showMessage(t);
 	locateObject(startbutton, scene2, 500, 70);
 	setObjectImage(startbutton, "images\\restart.png");
 }
@@ -112,6 +117,7 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 		enterScene(scene2);
 		createPuzzle();
 		hideObject(startbutton);
+		start = clock();
 	}
 	if (object == piece[upFinding()]) {
 		int k = upFinding();
